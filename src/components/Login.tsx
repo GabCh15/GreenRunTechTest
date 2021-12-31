@@ -94,7 +94,7 @@ const signIn = (mail: string, pass: string, history: any) => {
 
   auth.signInWithEmailAndPassword(mail, pass)
   .then(res => {
-    history.push('/');
+    history.push('/home');
   })
   .catch(error => {
     alert('No se ha podido autenticar');
@@ -137,7 +137,7 @@ const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = props =
         Cambiar Tema
       </button>
 
-      <Link to="/history">Ir a</Link>
+      <Link to="/home">Ir a</Link>
 
       <Section>
         <Contenedor>
@@ -153,6 +153,7 @@ const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = props =
                 id=""
                 label="User"
                 setRef={setEmailInput}
+                value="a@hotmail.com"
               />
               <FormField
                 onChange={()=>{}}
@@ -161,6 +162,7 @@ const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = props =
                 label="Password"
                 type="password"
                 setRef={setPasswordInput}
+                value="123456"
               />
               <DivBText className="text" style={{textAlign:'left', fontSize:'8px'}}>
               Forgot your password?
