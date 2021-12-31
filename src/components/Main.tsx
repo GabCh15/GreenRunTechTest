@@ -22,7 +22,7 @@ const Contenedor = styled.div`
   background: ${props => {return props.theme.palette.main.fondo}};
   display: grid;
   grid-template-rows: auto 40%;
-
+  box-sizing: border-box;
   background-image: url(/img/main.png);
   background-size: contain;
   background-repeat: no-repeat;
@@ -93,6 +93,7 @@ const Main: React.FunctionComponent<IPage & RouteComponentProps<any>> = props =>
                 //context.updateTema();
                 //props.updateTema();
                 updateTema(); // Ejecutamos el evento de App.tsx
+                                
             }}>Cambiar Tema</button>
 
             <Section>

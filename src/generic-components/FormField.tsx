@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   label: string;
+  setRef: any;
 }
 
 const InputGroup = styled.div`
   position: relative;
-  background: #2f2f43;
+  background: ${(props) => {
+    return props.theme.inputColor;
+  }};
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-sizing: border-box;
   border-radius: 10px;
@@ -32,7 +35,9 @@ const InputLabel = styled.label`
 const InputField = styled.input`
   font-size: 12px;
   height: 20px;
-  color: rgb(255 255 255 / 70%);
+  color: ${(props) => {
+    return props.theme.inputTextColor;
+  }};
   background-color: transparent;
   border: none;
   &:focus {
@@ -41,11 +46,20 @@ const InputField = styled.input`
   }
 `;
 
-const FormField: React.FC<InputProps> = ({ id, label, ...rest }) => {
+const FormField: React.FC<InputProps> = ({ id, label, setRef, ...rest }) => {
+
+  const elementRef = React.useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    console.log('Inptus Cargados');
+    setRef(elementRef);
+    
+  }, [])
+
   return (
     <InputGroup>
       <InputLabel htmlFor={id}>{label}</InputLabel>
-      <InputField id={id} {...rest} />
+      <InputField id={id} ref={elementRef} {...rest} />
     </InputGroup>
   );
 };

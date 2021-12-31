@@ -5,32 +5,28 @@ import { RouteComponentProps, Link } from "react-router-dom";
 import logging from "../config/logging";
 import { AppContext } from "../context/appcontext";
 import FormField from "../generic-components/FormField";
-enum VARIANT {
-  PRIMARY,
-  SECONDARY,
-}
+import { signInWithEmailAndPassword } from "firebase/auth";
 
-interface IProps {
-  variant?: VARIANT;
-}
-
-const Section = styled.section<IProps>`
+const Section = styled.section`
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: ${(props) => {
-    return props.theme.palette.common.fondo;
-  }};
 `;
 
 const Contenedor = styled.div`
   height: 425px;
   width: 208px;
-  border-radius: 20px;
-  background: #181828;
+  ${(props) => {
+    return props.theme.boxShadow;
+  }}
+  border-radius: 20px 20px 21px 21px;
+  background: ${(props) => {
+    return props.theme.palette.main.fondo;
+  }};
   padding: 90px 20px 30px 20px;
+  box-sizing: border-box;
 `;
 
 const DivB = styled.div`
@@ -49,21 +45,18 @@ const DivBTitleText = styled.div`
   font-size: 15px;
   line-height: 122.02%;
   text-align: center;
-  color: #fefefe;
 `;
 
 const DivBText = styled.div`
   font-family: Epilogue;
   font-style: normal;
   font-weight: normal;
-  color: #fefefe;
   padding-top: 8px;
-  text-align: center;
   font-size: 10px;
   opacity: 0.8;
 `;
 
-const DivBButton = styled(Link)`
+const DivBButton = styled.input`
   display: block;
   text-decoration: none;
   appearance: none;
@@ -71,6 +64,7 @@ const DivBButton = styled(Link)`
   padding: 10px 18px 10px 18px;
   margin: 0;
   margin-top: 20px;
+  margin-right:0;
   background: linear-gradient(99deg, #236bfe 6.69%, #0d4ed3 80.95%);
   box-shadow: 0px 4px 30px rgba(34, 105, 251, 0.8);
   border-radius: 12px;
@@ -81,7 +75,6 @@ const DivBButton = styled(Link)`
   color: #fefefe;
   font-size: 10px;
   cursor: pointer;
-  width: 20%;
   &:hover {
     background: linear-gradient(99deg, #236bfe 6.69%, #0d4ed3 50.95%);
     opacity: 0.9;
@@ -94,10 +87,39 @@ const ContainerInputs = styled.div`
   margin: 15px 0px;
 `;
 
+const signIn = async (auth: any, email: string, password: string, setIsAuth: any) => {
+
+  console.log('# Auth');
+  console.log(auth, email, password);
+  await signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      setIsAuth(true);
+    }).catch((error) => {
+      setIsAuth(false);
+    })
+
+};
+
 const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
   props
 ) => {
-  const { updateTema } = useContext(AppContext);
+  const { updateTema, auth, isAuth, setIsAuth } = useContext(AppContext);
+
+  const [emailInput, setEmailInput] = React.useState(React.useRef<HTMLInputElement>(null));
+  const [passwordInput, setPasswordInput] = React.useState(React.useRef<HTMLInputElement>(null));
+
+  const formHandle = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Form handle');
+    const mail = emailInput.current ? emailInput.current.value : '';
+    const pass = passwordInput.current ? passwordInput.current.value : '';
+    console.log(mail);
+    console.log(pass);
+
+    await signIn(auth, mail, pass, setIsAuth);
+  };
+
+  console.log('Verificando auth: ', isAuth());
 
   useEffect(() => {
     logging.info(`> Cargando ${props.name}`);
@@ -112,23 +134,45 @@ const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
           //context.updateTema();
           //props.updateTema();
           updateTema(); // Ejecutamos el evento de App.tsx
+          console.log('Ist Auth: ', isAuth());
         }}
       >
         Cambiar Tema
       </button>
 
+      <Link to="/history">Ir a</Link>
+
       <Section>
         <Contenedor>
-          <div></div>
-          <DivBTitleText>Welcome</DivBTitleText>
-          <DivBText>
+          <DivBTitleText className="title">Welcome</DivBTitleText>
+          <DivBText className="text" style={{textAlign:'center'}}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </DivBText>
-          <ContainerInputs>
-            <FormField id="" label="User"></FormField>
-            <FormField id="" label="Password" type="password"></FormField>
-          </ContainerInputs>
-          <DivBButton to="/login">Login</DivBButton>
+          <form onSubmit={formHandle}>
+            <ContainerInputs>            
+              <FormField
+              onChange={()=>{}}
+                name="user"
+                id=""
+                label="User"
+                value="a@hotmail.com"
+                setRef={setEmailInput}
+              />
+              <FormField
+              onChange={()=>{}}
+                name="password"
+                id=""
+                label="Password"
+                type="password"
+                value="123456"
+                setRef={setPasswordInput}
+              />
+              <DivBText className="text" style={{textAlign:'left', fontSize:'8px'}}>
+              Forgot your password?
+            </DivBText>
+            </ContainerInputs>
+            <DivBButton type="submit" value="Login"/>
+          </form>
         </Contenedor>
       </Section>
     </>

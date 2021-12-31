@@ -11,6 +11,8 @@ declare module "styled-components" {
     borderRadius: string;
     boxShadow: string;
     title: string;
+    inputColor: string;
+    inputTextColor: string;
     text: { color: string;};
 
     palette: {
