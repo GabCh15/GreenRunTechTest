@@ -6,26 +6,28 @@ import {
   RouteComponentProps,
 } from "react-router-dom";
 import logging from "./config/logging";
+// # Imports Adicionales
+import AuthRoute from './components/AuthRoute'
+import { auth } from './config/firebase';
 import routes from "./config/routes";
 import routesPrivate from "./config/routes-private";
-// # Imports Adicionales
-import { AppContext } from "./context/appcontext";
-import ProtectedRoute from "./generic-components/ProtectedRoute";
 
-const Enrutador: React.FunctionComponent<{}> = (props) => {
+export interface IEnrutadorProps {}
 
-  const context = useContext(AppContext);
- 
-  if(context.isAuth()) {
-    console.log('> Iniciando login');
-    
-  }
+const Enrutador: React.FunctionComponent<IEnrutadorProps> = (props) => {
 
-  console.log('AppContext', context);
+  const [load, setLoad] = useState<boolean>(true);
 
   useEffect(() => {
-    logging.info("Iniciando aplicacion");
+    
+    auth.onAuthStateChanged(user => {
+      setLoad(false);
+    })
+
   }, []);
+
+  if (load)
+    return (<h2>Cargando...</h2>);
 
   return (
     <>
@@ -44,20 +46,16 @@ const Enrutador: React.FunctionComponent<{}> = (props) => {
           ))}
 
           {routesPrivate.map((route, index) => (
-            <ProtectedRoute
-              key={index}
-              path={route.path}
-              exact={route.exact}
-              render={(props: RouteComponentProps<any>) => (
-                // # Agregar Component desde routes iterado por: map
-                <route.component
-                  name={route.name}
-                  {...props}
-                  {...route.props}
-                />
-              )}
-              isAuthenticated={context.isAuth() ? context.isAuth() : false}
-              authenticationPath="/login"
+            <Route
+                key={index}
+                path={route.path}
+                exact={route.exact}
+                render={(props: RouteComponentProps<any>) => (
+                  // # Agregar Component desde routes iterado por: map
+                  <AuthRoute>
+                    <route.component name={route.name} {...props} {...route.props} />
+                  </AuthRoute>
+                )}
             />
           ))}
 

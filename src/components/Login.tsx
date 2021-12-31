@@ -1,11 +1,12 @@
 import React, { useEffect, useContext } from "react";
 import IPage from "../interfaces/page";
 import styled from "styled-components";
-import { RouteComponentProps, Link } from "react-router-dom";
+import { RouteComponentProps, Link, useHistory } from "react-router-dom";
 import logging from "../config/logging";
+// # Imports adicionales
 import { AppContext } from "../context/appcontext";
 import FormField from "../generic-components/FormField";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../config/firebase';
 
 const Section = styled.section`
   display: flex;
@@ -87,39 +88,35 @@ const ContainerInputs = styled.div`
   margin: 15px 0px;
 `;
 
-const signIn = async (auth: any, email: string, password: string, setIsAuth: any) => {
+const signIn = (mail: string, pass: string, history: any) => {
 
   console.log('# Auth');
-  console.log(auth, email, password);
-  await signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      setIsAuth(true);
-    }).catch((error) => {
-      setIsAuth(false);
-    })
+
+  auth.signInWithEmailAndPassword(mail, pass)
+  .then(res => {
+    history.push('/');
+  })
+  .catch(error => {
+    alert('No se ha podido autenticar');
+  });
 
 };
 
-const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
-  props
-) => {
-  const { updateTema, auth, isAuth, setIsAuth } = useContext(AppContext);
+const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = props => {
 
+  const history = useHistory();
+
+  const { updateTema } = useContext(AppContext);
   const [emailInput, setEmailInput] = React.useState(React.useRef<HTMLInputElement>(null));
   const [passwordInput, setPasswordInput] = React.useState(React.useRef<HTMLInputElement>(null));
 
-  const formHandle = async (e: React.FormEvent<HTMLFormElement>) => {
+  const formHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Form handle');
     const mail = emailInput.current ? emailInput.current.value : '';
     const pass = passwordInput.current ? passwordInput.current.value : '';
-    console.log(mail);
-    console.log(pass);
-
-    await signIn(auth, mail, pass, setIsAuth);
+    signIn(mail, pass, history);
   };
-
-  console.log('Verificando auth: ', isAuth());
 
   useEffect(() => {
     logging.info(`> Cargando ${props.name}`);
@@ -134,7 +131,7 @@ const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
           //context.updateTema();
           //props.updateTema();
           updateTema(); // Ejecutamos el evento de App.tsx
-          console.log('Ist Auth: ', isAuth());
+          console.log('Ist Auth: ', auth.currentUser);
         }}
       >
         Cambiar Tema
@@ -151,20 +148,18 @@ const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
           <form onSubmit={formHandle}>
             <ContainerInputs>            
               <FormField
-              onChange={()=>{}}
+                onChange={()=>{}}
                 name="user"
                 id=""
                 label="User"
-                value="a@hotmail.com"
                 setRef={setEmailInput}
               />
               <FormField
-              onChange={()=>{}}
+                onChange={()=>{}}
                 name="password"
                 id=""
                 label="Password"
                 type="password"
-                value="123456"
                 setRef={setPasswordInput}
               />
               <DivBText className="text" style={{textAlign:'left', fontSize:'8px'}}>

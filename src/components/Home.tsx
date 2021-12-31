@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { RouteComponentProps, Link } from "react-router-dom";
 import logging from "../config/logging";
 import { AppContext } from "../context/appcontext";
-import FormField from "../generic-components/FormField";
-import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Section = styled.section`
   display: flex;
@@ -88,7 +86,7 @@ const DivBButton = styled(Link)`
 const Home: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
   props
 ) => {
-  const { updateTema, auth, setIsAuth } = useContext(AppContext);
+  const { updateTema } = useContext(AppContext);
 
   var email = "",
     password = "";

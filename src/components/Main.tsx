@@ -89,15 +89,10 @@ const Main: React.FunctionComponent<IPage & RouteComponentProps<any>> = props =>
     return (
         <>
             <button onClick={() => {
-                console.log('RR 2X..');
-                //context.updateTema();
-                //props.updateTema();
-                updateTema(); // Ejecutamos el evento de App.tsx
-                                
+                updateTema();
             }}>Cambiar Tema</button>
 
             <Section>
-                
                 <Contenedor>
                 <div></div>
                 <DivB>
