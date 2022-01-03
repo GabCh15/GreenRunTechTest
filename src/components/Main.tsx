@@ -15,8 +15,8 @@ const Section = styled.section`
 `;
 
 const Contenedor = styled.div`
-  height: 425px;
-  width: 208px;
+height: 816px;
+width: 408px;
   ${props => {return props.theme.boxShadow}}
   border-radius: 20px 20px 21px 21px;
   background: ${props => {return props.theme.palette.main.fondo}};
@@ -42,14 +42,14 @@ const DivBTitleText = styled.div`
   font-family: DM Sans;
   font-style: normal;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 30px;
   line-height: 122.02%;
   text-align: left;  
 `;
 
 const DivBText = styled.div`  
   padding-top: 8px;  
-  font-size: 10px;
+  font-size: 20px;
 `;
 
 const DivBButton = styled(Link)`
@@ -57,18 +57,18 @@ const DivBButton = styled(Link)`
   text-decoration:none;
   appearance: none;
   border: none;
-  padding: 10px 18px 10px 18px;
+  padding: 15px 30px 15px 30px;
   margin: 0;
   margin-top: 20px;
   background: linear-gradient(99deg, #236bfe 6.69%, #0d4ed3 80.95%);
   box-shadow: 0px 4px 30px rgba(34, 105, 251, 0.8);
-  border-radius: 12px;
+  border-radius: 15px;
   font-family: DM Sans;
   font-style: normal;
   font-weight: bold;
   text-align: center;
   color: #fefefe;
-  font-size: 10px;
+  font-size: 20px;
   cursor: pointer;
 
   &:hover {
@@ -84,14 +84,10 @@ const Main: React.FunctionComponent<IPage & RouteComponentProps<any>> = props =>
     useEffect(() => {
         logging.info(`> Cargando ${props.name}`);
         console.log(props);
-    }, [])
+    })
 
     return (
         <>
-            <button onClick={() => {
-                updateTema();
-            }}>Cambiar Tema</button>
-
             <Section>
                 <Contenedor>
                 <div></div>

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export const AppContext = React.createContext<{
     state?: any;
     updateTema?: any;
-    dispatch?: React.Dispatch<any>;
+    expand?: {get: boolean, set: any};
 }>({});
 

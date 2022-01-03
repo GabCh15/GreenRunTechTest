@@ -16,8 +16,8 @@ const InputGroup = styled.div`
   box-sizing: border-box;
   border-radius: 10px;
   text-align: left;
-  padding: 10px 8px;
-  height: 40px;
+  padding: 10px 16px;
+  height: 60px;
 `;
 
 const InputLabel = styled.label`
@@ -26,15 +26,15 @@ const InputLabel = styled.label`
   font-style: normal;
   font-weight: bold;
   text-align: left;
-  font-size: 8px;
+  font-size: 16px;
   position: absolute;
   top: 5px;
-  left: 10px;
+  left: 17px;
 `;
 
 const InputField = styled.input`
-  font-size: 12px;
-  height: 20px;
+  font-size: 18px;
+  height: 52px;
   color: ${(props) => {
     return props.theme.inputTextColor;
   }};
@@ -44,6 +44,7 @@ const InputField = styled.input`
     outline-offset: none;
     outline: none;
   }
+  
 `;
 
 const FormField: React.FC<InputProps> = ({ id, label, setRef, ...rest }) => {
@@ -54,12 +55,12 @@ const FormField: React.FC<InputProps> = ({ id, label, setRef, ...rest }) => {
     console.log('Inptus Cargados');
     setRef(elementRef);
     
-  }, [])
+  })
 
   return (
     <InputGroup>
-      <InputLabel htmlFor={id}>{label}</InputLabel>
-      <InputField id={id} ref={elementRef} {...rest} />
+      <InputLabel htmlFor={id} >{label} </InputLabel>
+      <InputField id={id}  ref={elementRef} {...rest} />
     </InputGroup>
   );
 };

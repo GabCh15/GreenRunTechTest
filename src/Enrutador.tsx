@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter,
   Route,
   Switch,
   RouteComponentProps,
 } from "react-router-dom";
-import logging from "./config/logging";
 // # Imports Adicionales
 import { auth } from './config/firebase';
 import routes from "./config/routes";
@@ -38,7 +37,6 @@ const Enrutador: React.FunctionComponent<IEnrutadorProps> = (props) => {
                   path={route.path}
                   exact={route.exact}
                   render={(props: RouteComponentProps<any>) => (
-                    // # Agregar Component desde routes iterado por: map
                     <route.component name={route.name} {...props} />
                   )}
                 />

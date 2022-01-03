@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import logging from "./config/logging";
 // # Imports Adicionales
 import { ThemeProvider } from "styled-components";
@@ -11,6 +11,8 @@ import Enrutador from './Enrutador';
 const App: React.FunctionComponent<{}> = (props) => {
   const [tema, setTema] = useState(theme_light);
   const [optionTema, setOptionTema] = useState(true);
+
+  const context = useContext(AppContext);
 
   const cambiarTema = () => {
     logging.info("Cambiando Tema");
@@ -32,7 +34,7 @@ const App: React.FunctionComponent<{}> = (props) => {
 
   return (
     <div>
-      <AppContext.Provider value={{ updateTema: cambiarTema }}>
+      <AppContext.Provider value={{ ...context, updateTema: cambiarTema }}>
         <ThemeProvider theme={tema}>
           <GlobalStyle />
           <Enrutador />

@@ -83,16 +83,16 @@ const signIn = (mail: string, pass: string, history: any) => {
   console.log("# Auth");
 
   auth
-    .signInWithEmailAndPassword(mail, pass)
+    .createUserWithEmailAndPassword(mail, pass)
     .then((res) => {
       history.push("/home");
     })
     .catch((error) => {
-      alert("No se ha podido autenticar");
+      alert("No se ha podido registrar");
     });
 };
 
-const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
+const Register: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
   props
 ) => {
   const history = useHistory();
@@ -122,7 +122,7 @@ const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
     <>
       <Section>
         <Contenedor>
-          <DivBTitleText className="title">Welcome</DivBTitleText>
+          <DivBTitleText className="title">Register</DivBTitleText>
           <DivBText className="text" style={{ textAlign: "center", padding: "20px 50px 20px 50px" }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </DivBText>
@@ -133,8 +133,8 @@ const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
                 name="user"
                 id=""
                 label="User"
-                setRef={setEmailInput}
                 placeholder="UserName..."
+                setRef={setEmailInput}
               />
               <FormField
                 onChange={() => {}}
@@ -142,25 +142,20 @@ const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
                 id=""
                 label="Password"
                 type="password"
-                setRef={setPasswordInput}
                 placeholder="Password..."
+                setRef={setPasswordInput}
               />
-              <DivBText
-                className="text"
-                style={{ textAlign: "left", fontSize: "14px" }}
-              >
-                Forgot your password?
-              </DivBText>
+
             </ContainerInputs>
 
-            <DivBButton type="submit" value="Login" />
+            <DivBButton type="submit" value="Register" />
             <DivBText
               className="text"
               style={{ textAlign: "left", fontSize: "16px", marginTop: "10px" }}
             >
-              Not registered yet?
+              Already have an account?
               
-              <Link to="/register"> Create an account</Link>
+              <Link to="/login">Log In</Link>
               
             </DivBText>
           </form>
@@ -170,4 +165,4 @@ const Login: React.FunctionComponent<IPage & RouteComponentProps<any>> = (
   );
 };
 
-export default Login;
+export default Register;
